@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<title>Calculator</title>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+	
+</head>
+<body>
+
+<table>
+<tr>
+	<td><b>Selling Price (Without Commas)</b></td>
+	<td > <input type="number" name="sprice" id="sprice" value="0.00"></td>
+</tr>
+<tr>	
+	<td>Title Insurance</td>
+	<td> <input type="number" name="TitleInsurance" id="TitleInsurance" value="0.00"> </td>
+</tr>
+<tr>
+	<td> Settlement Fees and Title search </td>
+	<td><input type="number" name="Settlement" id="Settlement" value="700.00" disabled></td>
+</tr>
+<tr>
+	<td>Enter Outstanding Mortgage Amount</td>
+	<td><input type="number" name="outMortgage" id="outMortgage" value="0.00"></td>
+</tr>
+<tr>
+	<td>Enter Outstanding Second Mortgage Amount</td>
+	<td><input type="number" name="out2ndMortgage" id="out2ndMortgage" value="0.00"></td>
+</tr>
+<tr>
+	<td>Transfer Tax (%0.7)</td>
+	<td><input type="number" name="TTax" id="TTax" value="0.00" disabled></td>
+</tr>
+<tr>
+	<td>Do You Have a Real Estate Agent? (%3)</td>
+	<td><input type="checkbox" name="realCheck" id="realCheck" ><input type="number" name"reagent" id="realCheckVal"value="0.00" disabled></td>
+</tr>
+<tr>
+	<td>Commission to Buyer's Agent</td>
+	<td><input type="number" name="commb" id="commb" value="0.00"></td>
+</tr>
+<tr>
+	<td><b>Total Deductions</b></td>
+	<td><input type="text" name="tDeduct" id="tDeduct" value="0.00"></td>
+</tr>
+<tr>
+	<td><b>Approximate Net Proceeds to Seller</b></td>
+	<td><input type="text" name="netproce" id="netproce" value="0.00"></td>
+	</tr>
+</table>
+
+<script>
+$(document).ready(function() {
+	
+		//item 1
+		$("#TitleInsurance").change(function(){
+			//Calculating Total Deductions
+			$("#tDeduct").val(
+				parseFloat($("#tDeduct").val())+parseFloat($("#TitleInsurance").val())
+				)
+			//Calculating Approximate Net Proceeds to Seller
+			$("#netproce").val(
+				parseFloat($("#sprice").val())-parseFloat($("#tDeduct").val())
+				)
+		});
+		//item 2
+		//$("#Settlement").change(function(){
+			//Calculating Total Deductions
+			$("#tDeduct").val(
+				parseFloat($("#tDeduct").val())+parseFloat($("#Settlement").val())
+				)
+			//Calculating Approximate Net Proceeds to Seller
+			$("#netproce").val(
+				parseFloat($("#sprice").val())-parseFloat($("#tDeduct").val())
+				)
+		//})
+		//item 3
+		$("#outMortgage").change(function(){
+			//Calculating Total Deductions
+			$("#tDeduct").val(
+				parseFloat($("#tDeduct").val())+parseFloat($("#outMortgage").val())
+				)
+			//Calculating Approximate Net Proceeds to Seller
+			$("#netproce").val(
+				parseFloat($("#sprice").val())-parseFloat($("#tDeduct").val())
+				)
+		});
+		//item 4
+		$("#out2ndMortgage").change(function(){
+			//Calculating Total Deductions
+			$("#tDeduct").val(
+				parseFloat($("#tDeduct").val())+parseFloat($("#out2ndMortgage").val())
+				)
+			//Calculating Approximate Net Proceeds to Seller
+			$("#netproce").val(
+				parseFloat($("#sprice").val())-parseFloat($("#tDeduct").val())
+				)
+		});
+		
+		//when Transfer Tax (id=TTax) is changed because of sales price
+			$("#sprice").change(function(){
+				$("#TTax").val(
+					$("#sprice").val()*0.007
+				)
+				//item 5
+				$("#tDeduct").val(
+					parseFloat($("#tDeduct").val())+parseFloat($("#TTax").val())
+				)
+				//Calculating Approximate Net Proceeds to Seller
+				$("#netproce").val(
+				parseFloat($("#sprice").val())-parseFloat($("#tDeduct").val())
+				)
+			});
+			//item 6 (part-1)
+			//when Do You Have a Real Estate Agent? (id=realCheck) checkbox is checked
+		$("#realCheck").click(function(){
+			if(document.getElementById('realCheck').checked){
+					 $("#realCheckVal").val(
+						$("#sprice").val()*0.03
+					)
+				//Calculating Total Deductions
+					$("#tDeduct").val(
+						parseFloat($("#tDeduct").val())+parseFloat($("#realCheckVal").val())
+						)
+				
+				//Calculating Approximate Net Proceeds to Seller
+					$("#netproce").val(
+						parseFloat($("#sprice").val())-parseFloat($("#tDeduct").val())
+						)
+				}
+			else{
+					$("#realCheckVal").val(0)
+				//Calculating Total Deductions
+					$("#tDeduct").val(
+						parseFloat($("#tDeduct").val())-parseFloat($("#sprice").val()*0.03)
+						)
+				
+				//Calculating Approximate Net Proceeds to Seller
+					$("#netproce").val(
+						parseFloat($("#sprice").val())-parseFloat($("#tDeduct").val())
+						)
+				}
+		});
+		
+		//item 7
+		$("#commb").change(function(){
+			//Calculating Total Deductions
+			$("#tDeduct").val(
+				parseFloat($("#tDeduct").val())+parseFloat($("#commb").val())
+				)
+			//Calculating Approximate Net Proceeds to Seller
+			$("#netproce").val(
+				parseFloat($("#sprice").val())-parseFloat($("#tDeduct").val())
+				)
+		});
+	
+});
+</script>
+
+
+
+</body>
+</html>
