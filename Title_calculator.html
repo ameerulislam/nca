@@ -11,11 +11,27 @@
 <table>
 <tr>
 	<td><b>Selling Price (Without Commas)</b></td>
-	<td > <input type="number" name="sprice" id="sprice" value="0.00"></td>
+	<td > <input type="number" name="sprice" id="sprice" value="10001000.00"></td>
 </tr>
 <tr>	
-	<td>Title Insurance</td>
-	<td> <input type="number" name="TitleInsurance" id="TitleInsurance" value="0.00"> </td>
+	<td>$0 up to $100,000 - $5.75 per $1000 (min $100)</td>
+	<td> <input type="number" name="TI_0_100K" id="TI_0_100K" value="0.00" disabled> </td>
+</tr>
+<tr>
+	<td>Over $100,000 up to $1 Million - $5.00 per $1000</td>
+	<td> <input type="number" name="TI_100K_1M" id="TI_100K_1M" value="0.00" disabled> </td>
+</tr>
+<tr>
+	<td>Over $1 Million up to $5 Million - $2.50 per $1000</td>
+	<td> <input type="number" name="TI_1M_5M" id="TI_1M_5M" value="0.00" disabled> </td>
+</tr>
+<tr>
+	<td>Over $5 Million up to $10 Million - $2.25 per $1000</td>
+	<td> <input type="number" name="TI_5M_10M" id="TI_5M_10M" value="0.00" disabled> </td>
+</tr>
+<tr>
+	<td>Over $10 Million - $2.00 per $1000</td>
+	<td> <input type="number" name="TI_10MUP" id="TI_10MUP" value="0.00" disabled> </td>
 </tr>
 <tr>
 	<td> Settlement Fees and Title search </td>
@@ -54,19 +70,103 @@
 <script>
 $(document).ready(function() {
 	
-		//item 1
-		$("#TitleInsurance").change(function(){
+		//item 1 
+			if((parseFloat($("#sprice").val()))<(100/5.75*1000)) {//(A)
+				$("#TI_0_100K").val(100)
+			}else if (parseFloat($("#sprice").val())>1000 && parseFloat($("#sprice").val())<100001){
+				$("#TI_0_100K").val(
+					 parseFloat( ( $("#sprice").val() ) ) /1000*5.75
+				)
+			}else if (parseFloat($("#sprice").val())>100000 && parseFloat($("#sprice").val())<1000001){//(B)
+				$("#TI_0_100K").val(575)
+				$("#TI_100K_1M").val(
+					( parseFloat( ( $("#sprice").val() ) ) -100000)/1000*5
+				)
+			}else if (parseFloat($("#sprice").val())>1000000 && parseFloat($("#sprice").val())<5000001){//(C)
+				$("#TI_0_100K").val(575)
+				$("#TI_100K_1M").val(4500)
+				$("#TI_1M_5M").val(
+					( parseFloat( ( $("#sprice").val() ) ) -1000000)/1000*2.5
+				)
+			}else if (parseFloat($("#sprice").val())>5000000 && parseFloat($("#sprice").val())<10000001){//(D)
+				$("#TI_0_100K").val(575)
+				$("#TI_100K_1M").val(4500)
+				$("#TI_1M_5M").val(10000)
+				$("#TI_5M_10M").val(
+					( parseFloat( ( $("#sprice").val() ) ) -5000000)/1000*2.25
+				)
+			}else if (parseFloat($("#sprice").val())>10000000){//(E)
+				$("#TI_0_100K").val(575)
+				$("#TI_100K_1M").val(4500)
+				$("#TI_1M_5M").val(10000)
+				$("#TI_5M_10M").val(11250)
+				$("#TI_10MUP").val(
+					( parseFloat( ( $("#sprice").val() ) ) -10000000)/1000*2
+				)
+			}
+			//for changes in values 
+				$("#sprice").change(function(){
+					if((parseFloat($("#sprice").val()))<(100/5.75*1000)) {//(A)
+						$("#TI_0_100K").val(100)
+						$("#TI_100K_1M").val(0)
+						$("#TI_1M_5M").val(0)
+						$("#TI_5M_10M").val(0)
+						$("#TI_10MUP").val(0)
+					}else if (parseFloat($("#sprice").val())>1000 && parseFloat($("#sprice").val())<100001){
+						$("#TI_0_100K").val(
+							 parseFloat( ( $("#sprice").val() ) ) /1000*5.75
+						)
+						$("#TI_100K_1M").val(0)
+						$("#TI_1M_5M").val(0)
+						$("#TI_5M_10M").val(0)
+						$("#TI_10MUP").val(0)
+					}else if (parseFloat($("#sprice").val())>100000 && parseFloat($("#sprice").val())<1000001){//(B)
+						$("#TI_0_100K").val(575)
+						$("#TI_100K_1M").val(
+							( parseFloat( ( $("#sprice").val() ) ) -100000)/1000*5
+						)
+						$("#TI_1M_5M").val(0)
+						$("#TI_5M_10M").val(0)
+						$("#TI_10MUP").val(0)
+					}else if (parseFloat($("#sprice").val())>1000000 && parseFloat($("#sprice").val())<5000001){//(C)
+						$("#TI_0_100K").val(575)
+						$("#TI_100K_1M").val(4500)
+						$("#TI_1M_5M").val(
+							( parseFloat( ( $("#sprice").val() ) ) -1000000)/1000*2.5
+						)
+						$("#TI_5M_10M").val(0)
+						$("#TI_10MUP").val(0)
+					}else if (parseFloat($("#sprice").val())>5000000 && parseFloat($("#sprice").val())<10000001){//(D)
+						$("#TI_0_100K").val(575)
+						$("#TI_100K_1M").val(4500)
+						$("#TI_1M_5M").val(10000)
+						$("#TI_5M_10M").val(
+							( parseFloat( ( $("#sprice").val() ) ) -5000000)/1000*2.25
+						)
+						$("#TI_10MUP").val(0)
+					}else if (parseFloat($("#sprice").val())>10000000){//(E)
+						$("#TI_0_100K").val(575)
+						$("#TI_100K_1M").val(4500)
+						$("#TI_1M_5M").val(10000)
+						$("#TI_5M_10M").val(11250)
+						$("#TI_10MUP").val(
+							( parseFloat( ( $("#sprice").val() ) ) -10000000)/1000*2
+						)
+					}
+				});
+
+
+			// calculating TI_0_100K + TI_100K_1M + TI_1M_5M + TI_5M_10M + TI_10MUP
 			//Calculating Total Deductions
 			$("#tDeduct").val(
-				parseFloat($("#tDeduct").val())+parseFloat($("#TitleInsurance").val())
+				parseFloat($("#tDeduct").val())+parseFloat($("#TI_0_100K").val())+parseFloat($("#TI_100K_1M").val())+parseFloat($("#TI_1M_5M").val())+parseFloat($("#TI_5M_10M").val())+parseFloat($("#TI_10MUP").val())
 				)
 			//Calculating Approximate Net Proceeds to Seller
 			$("#netproce").val(
 				parseFloat($("#sprice").val())-parseFloat($("#tDeduct").val())
 				)
-		});
+
 		//item 2
-		//$("#Settlement").change(function(){
 			//Calculating Total Deductions
 			$("#tDeduct").val(
 				parseFloat($("#tDeduct").val())+parseFloat($("#Settlement").val())
@@ -75,7 +175,7 @@ $(document).ready(function() {
 			$("#netproce").val(
 				parseFloat($("#sprice").val())-parseFloat($("#tDeduct").val())
 				)
-		//})
+
 		//item 3
 		$("#outMortgage").change(function(){
 			//Calculating Total Deductions
@@ -99,9 +199,9 @@ $(document).ready(function() {
 				)
 		});
 		
-		//when Transfer Tax (id=TTax) is changed because of sales price
-			$("#sprice").change(function(){
-				$("#TTax").val(
+		//item 5 without change
+			
+			$("#TTax").val(
 					$("#sprice").val()*0.007
 				)
 				//item 5
@@ -112,8 +212,23 @@ $(document).ready(function() {
 				$("#netproce").val(
 				parseFloat($("#sprice").val())-parseFloat($("#tDeduct").val())
 				)
+				
+		//item 5 with change //when Transfer Tax (id=TTax) is changed because of sales price 
+			$("#sprice").change(function(){
+				$("#TTax").val(
+					$("#sprice").val()*0.007
+				)
+				//item 5
+				$("#tDeduct").val(
+					parseFloat($("#Settlement").val())+parseFloat($("#TTax").val())
+				)
+				//Calculating Approximate Net Proceeds to Seller
+				$("#netproce").val(
+				parseFloat($("#sprice").val())-parseFloat($("#tDeduct").val())
+				)
 			});
-			//item 6 (part-1)
+			
+			//item 6 
 			//when Do You Have a Real Estate Agent? (id=realCheck) checkbox is checked
 		$("#realCheck").click(function(){
 			if(document.getElementById('realCheck').checked){
